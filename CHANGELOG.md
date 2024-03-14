@@ -1,3 +1,3 @@
-## 1.0.2
+## 1.0.3
 
-- Use RawImage to display the ui.Image.
+- Fix a bug that may cause splash.
