@@ -1,7 +1,7 @@
 name: flutter_flappy_crop
-description: "A pacakge to clip your image"
-version: 0.0.1
-homepage:
+description: "A Flutter Package to help clip your image,You can dragging or scaling the clip area smoothly."
+version: 1.0.0
+homepage: https://github.com/flappygod/flutter_flappy_crop
 
 environment:
   sdk: '>=3.2.6 <4.0.0'
