@@ -271,7 +271,7 @@ class _CropImageGestureViewState extends State<CropImageGestureView> {
     Rect rectTwo = Rect.zero;
 
     ///width limit
-    if (newLeft + newWidth > widget.width) {
+    if (newWidth > widget.width) {
       double newLeftOne = 0;
       double newWidthOne = widget.width;
       double newHeightOne = newWidthOne / startRatio;
@@ -280,7 +280,7 @@ class _CropImageGestureViewState extends State<CropImageGestureView> {
     }
 
     ///height limit
-    if (newTop + newHeight > widget.height) {
+    if (newHeight > widget.height) {
       double newTopTwo = 0;
       double newHeightTwo = widget.height;
       double newWidthTwo = newHeightTwo * startRatio;

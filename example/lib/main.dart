@@ -119,8 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ? const SizedBox()
               : CropImageView(
                   controller: _controller!,
-                  ratio: null,
-                  //ratio: 1.0,
+                  ratio: 1.0,
                 ),
           Align(
             alignment: Alignment.topCenter,
