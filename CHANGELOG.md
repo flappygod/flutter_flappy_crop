@@ -1,3 +1,3 @@
-## 1.0.0
+## 1.0.1
 
-- Add this crop image library.
+- Bugs Fixed.
