@@ -221,8 +221,7 @@ class _CropImageGestureViewState extends State<CropImageGestureView> {
 
   ///update details
   void _updateScale(ScaleUpdateDetails details) {
-
-    if(_startRect.width==0||_startRect.height==0){
+    if (_startRect.width == 0 || _startRect.height == 0) {
       return;
     }
 

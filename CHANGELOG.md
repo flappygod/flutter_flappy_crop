@@ -1,3 +1,3 @@
-## 1.0.3
+## 1.0.4
 
-- Fix a bug that may cause splash.
+- Fix a bug that may cause error.
