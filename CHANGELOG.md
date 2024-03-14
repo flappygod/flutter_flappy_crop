@@ -1,3 +1,3 @@
-## 1.0.1
+## 1.0.2
 
-- Bugs Fixed.
+- Use RawImage to display the ui.Image.

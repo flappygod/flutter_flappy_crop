@@ -59,6 +59,9 @@ class CropImageGestureView extends StatefulWidget {
   ///scrimColor
   final Color scrimColor;
 
+  ///touch area
+  final double cornerTouchArea;
+
   const CropImageGestureView({
     super.key,
     required this.width,
@@ -79,6 +82,7 @@ class CropImageGestureView extends StatefulWidget {
     this.threeLineWidth = 1,
     this.threeLineShow = true,
     this.onChange,
+    this.cornerTouchArea = 20,
   }) : assert(initScale <= 1.0);
 
   @override
@@ -111,9 +115,6 @@ class _CropImageGestureViewState extends State<CropImageGestureView> {
 
   PositionType _startPositionType = PositionType.center;
   Offset _startPosition = const Offset(0, 0);
-
-  ///10
-  final int dotSpaceArea = 15;
 
   ///init clip rect
   void _initClipRect() {
@@ -168,30 +169,30 @@ class _CropImageGestureViewState extends State<CropImageGestureView> {
           _startPositionType = PositionType.center;
           Offset leftTop = Offset(_left, _top);
           if ((details.localFocalPoint.dx - leftTop.dx).toInt().abs() <
-                  dotSpaceArea &&
+                  widget.cornerTouchArea &&
               (details.localFocalPoint.dy - leftTop.dy).toInt().abs() <
-                  dotSpaceArea) {
+                  widget.cornerTouchArea) {
             _startPositionType = PositionType.leftTop;
           }
           Offset leftBottom = Offset(_left, _top + _height);
           if ((details.localFocalPoint.dx - leftBottom.dx).toInt().abs() <
-                  dotSpaceArea &&
+                  widget.cornerTouchArea &&
               (details.localFocalPoint.dy - leftBottom.dy).toInt().abs() <
-                  dotSpaceArea) {
+                  widget.cornerTouchArea) {
             _startPositionType = PositionType.leftBottom;
           }
           Offset rightTop = Offset(_left + _width, _top);
           if ((details.localFocalPoint.dx - rightTop.dx).toInt().abs() <
-                  dotSpaceArea &&
+                  widget.cornerTouchArea &&
               (details.localFocalPoint.dy - rightTop.dy).toInt().abs() <
-                  dotSpaceArea) {
+                  widget.cornerTouchArea) {
             _startPositionType = PositionType.rightTop;
           }
           Offset rightBottom = Offset(_left + _width, _top + _height);
           if ((details.localFocalPoint.dx - rightBottom.dx).toInt().abs() <
-                  dotSpaceArea &&
+                  widget.cornerTouchArea &&
               (details.localFocalPoint.dy - rightBottom.dy).toInt().abs() <
-                  dotSpaceArea) {
+                  widget.cornerTouchArea) {
             _startPositionType = PositionType.rightBottom;
           }
         }

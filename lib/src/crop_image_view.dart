@@ -15,7 +15,6 @@ class CropImageViewController {
 
   ///image width and height
   ui.Image? _imageUi;
-  Uint8List? _imageData;
   double _imageWidth = 0;
   double _imageHeight = 0;
 
@@ -146,34 +145,24 @@ class _CropImageViewState extends State<CropImageView> {
   ///resolve image
   void _resolveImage() {
     if (widget.controller.image != null) {
-      ImageCropTool.changeImageToData(widget.controller.image!).then((value) {
-        assert(widget.controller._imageUi == null);
-        widget.controller._imageUi = widget.controller.image;
-        widget.controller._imageData = value;
-        widget.controller._imageWidth =
-            widget.controller.image!.width.toDouble();
-        widget.controller._imageHeight =
-            widget.controller.image!.height.toDouble();
-        if (mounted) {
-          setState(() {});
-        }
-      });
+      assert(widget.controller._imageUi == null);
+      widget.controller._imageUi = widget.controller.image;
+      widget.controller._imageWidth = widget.controller.image!.width.toDouble();
+      widget.controller._imageHeight =
+          widget.controller.image!.height.toDouble();
       return;
     }
     if (widget.controller.imagePath != null) {
       ImageCropTool.loadImageFromFile(File(widget.controller.imagePath!))
           .then((value) {
         if (value != null) {
-          ImageCropTool.changeImageToData(value).then((data) {
-            assert(widget.controller._imageUi == null);
-            widget.controller._imageUi = value;
-            widget.controller._imageData = data;
-            widget.controller._imageWidth = value.width.toDouble();
-            widget.controller._imageHeight = value.height.toDouble();
-            if (mounted) {
-              setState(() {});
-            }
-          });
+          assert(widget.controller._imageUi == null);
+          widget.controller._imageUi = value;
+          widget.controller._imageWidth = value.width.toDouble();
+          widget.controller._imageHeight = value.height.toDouble();
+          if (mounted) {
+            setState(() {});
+          }
         }
       });
       return;
@@ -205,9 +194,9 @@ class _CropImageViewState extends State<CropImageView> {
 
   ///build image
   Widget _buildImage() {
-    if (widget.controller._imageData != null) {
-      return Image.memory(
-        widget.controller._imageData!,
+    if (widget.controller._imageUi != null) {
+      return RawImage(
+        image: widget.controller._imageUi!,
         fit: BoxFit.contain,
       );
     }
@@ -216,7 +205,7 @@ class _CropImageViewState extends State<CropImageView> {
 
   ///build loading
   Widget _buildClip() {
-    if (widget.controller._imageData == null) {
+    if (widget.controller._imageUi == null) {
       return widget.loading ?? const SizedBox();
     }
     return _buildClipArea();
