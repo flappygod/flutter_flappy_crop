@@ -1,7 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'crop_image_gesture_view.dart';
 import 'image_tool.dart';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:io';
 
@@ -25,8 +25,13 @@ class CropImageViewController {
 
   ///crop image
   Future<Uint8List?> cropImage() async {
-    if (_imageUi == null || _imageWidth == 0 || _imageHeight == 0) {
+    if (_imageUi == null) {
       return null;
+    }
+
+    ///error image width height
+    if (_imageWidth == 0 || _imageHeight == 0) {
+      throw Exception("error image size: $_imageWidth x $_imageHeight");
     }
 
     ///get width height and position
@@ -49,9 +54,14 @@ class CropImageViewController {
           cropRect.width.toInt(),
           cropRect.height.toInt(),
         );
-    final ByteData? byteData =
-        await croppedImage.toByteData(format: ui.ImageByteFormat.png);
-    return byteData!.buffer.asUint8List();
+    try {
+      final ByteData? byteData = await croppedImage.toByteData(
+        format: ui.ImageByteFormat.png,
+      );
+      return byteData?.buffer.asUint8List();
+    } finally {
+      croppedImage.dispose();
+    }
   }
 
   CropImageViewController({
@@ -163,6 +173,11 @@ class _CropImageViewState extends State<CropImageView> {
           if (mounted) {
             setState(() {});
           }
+        }
+      }).catchError((error, stackTrace) {
+        if (kDebugMode) {
+          print("An error occurred: $error");
+          print("Stack trace: $stackTrace");
         }
       });
       return;

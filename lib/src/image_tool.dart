@@ -19,29 +19,36 @@ class ImageCropTool {
 
   ///load image form file
   static Future<ui.Image?> loadImageFromFile(File file) async {
-    //read
-    assets.ImageStream stream =
-        assets.FileImage(file).resolve(assets.ImageConfiguration.empty);
+    //check exists
+    if (!file.existsSync()) {
+      throw Exception("file does not exist: ${file.path}");
+    }
+
+    //create stream
+    assets.ImageStream stream = assets.FileImage(file).resolve(
+      assets.ImageConfiguration.empty,
+    );
     Completer<ui.Image?> completer = Completer<ui.Image?>();
-    //listener
-    assets.ImageStreamListener listener = assets.ImageStreamListener(
-        (assets.ImageInfo frame, bool synchronousCall) {
-      final ui.Image image = frame.image;
-      if (!completer.isCompleted) {
-        completer.complete(image);
-      }
-    }, onError: (Object exception, StackTrace? stackTrace) {
-      if (!completer.isCompleted) {
-        completer.complete(null);
-      }
-    });
-    //complete
-    completer.future.then((value) {
-      stream.removeListener(listener);
-    });
+
     //add listener
-    stream.addListener(listener);
-    //return the future
-    return completer.future;
+    assets.ImageStreamListener listener = assets.ImageStreamListener(
+      (assets.ImageInfo frame, bool synchronousCall) {
+        final ui.Image image = frame.image;
+        if (!completer.isCompleted) {
+          completer.complete(image);
+        }
+      },
+      onError: (Object exception, StackTrace? stackTrace) {
+        if (!completer.isCompleted) {
+          completer.completeError(exception, stackTrace);
+        }
+      },
+    );
+    try {
+      stream.addListener(listener);
+      return await completer.future;
+    } finally {
+      stream.removeListener(listener);
+    }
   }
 }
